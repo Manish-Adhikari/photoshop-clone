@@ -1,0 +1,9 @@
+.plus-button{
+	float: left;
+	padding: 10px;
+}
+
+.minus-button{
+	float: right;
+	padding: 10px;
+}
