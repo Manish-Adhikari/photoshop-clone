@@ -1,6 +1,7 @@
 var canvasWrapper = document.getElementsByClassName('canvas-wrapper')[0];
 var layersWrapper = document.getElementsByClassName('layers-wrapper')[0];
 
+
 function createCanvas(brushColor,layerIndex) {
     this.canvas = document.createElement('canvas');
     this.canvasWrapper = canvasWrapper;
@@ -28,16 +29,17 @@ function createCanvas(brushColor,layerIndex) {
 
     that = this;
 
-    (function(myLayer,myCanvas,index){
+    (function(myLayer,myCanvas,index,brushColor){
         myLayer.onclick = function() {
         myLayer.style.border = '1px solid black';
         myCanvas.style.zIndex = '1';
         myCanvas.style.position = 'absolute';
         console.log('iffe fired ' + index);
+        that.brushColor = brushColor;
+        that.context = myCanvas.getContext('2d');
          }
-    })(this.layerDiv,this.canvas,this.layerIndex);
+    })(this.layerDiv,this.canvas,this.layerIndex,this.brushColor);
  
-
     this.plotPoints = function(event) {
         if (that.flag) {
             that.context.fill();
