@@ -1,7 +1,6 @@
 var canvasWrapper = document.getElementsByClassName('canvas-wrapper')[0];
 var layersWrapper = document.getElementsByClassName('layers-wrapper')[0];
 
-
 function createCanvas(brushColor,layerIndex) {
     this.canvas = document.createElement('canvas');
     this.canvasWrapper = canvasWrapper;
@@ -10,6 +9,7 @@ function createCanvas(brushColor,layerIndex) {
     this.canvas.width = this.canvasWrapper.offsetWidth;
     this.canvas.style.position = 'absolute';
     this.canvas.style.border = '1px solid black';
+    this.canvas.style.zIndex = '1';
     this.brushColor = brushColor;
     this.flag = false;
     this.context = this.canvas.getContext('2d');
@@ -31,7 +31,9 @@ function createCanvas(brushColor,layerIndex) {
 
     (function(myLayer,myCanvas,index,brushColor){
         myLayer.onclick = function() {
+        resetZindex();
         myLayer.style.border = '1px solid black';
+        myLayer.style.background = 'white';
         myCanvas.style.zIndex = '1';
         myCanvas.style.position = 'absolute';
         console.log('iffe fired ' + index);
@@ -69,4 +71,13 @@ function createCanvas(brushColor,layerIndex) {
     this.canvas.addEventListener('mousemove', this.plotPoints);
     this.canvas.addEventListener('mousedown', this.enableFlag);
     this.canvas.addEventListener('mouseup', this.disableFlag);
+}
+
+function resetZindex() {
+    for(var i = 0; i < canvasArray.length; i++) {
+        canvasArray[i].canvas.style.zIndex = '0';
+        canvasArray[i].layerDiv.style.border = 'none';
+        canvasArray[i].layerDiv.style.background ='lightgrey';
+        //console.log(canvasArray[i].canvas.style.zIndex);
+    }
 }

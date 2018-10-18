@@ -1,16 +1,19 @@
 .plus-button{
 	float: left;
 	padding: 10px;
-	position: relative;
 }
 
 .minus-button{
 	float: right;
 	padding: 10px;
-	position: relative;
 }
 
 .layers-wrapper{
 	overflow-y : auto;
 	overflow-x: hidden;
+}
+
+.layers-wrapper-button{
+	width: 100%;
+	height: 40px;
 }
