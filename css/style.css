@@ -1,11 +1,72 @@
+.file-menu-wrapper{
+	
+}
+
+.file-menu-wrapper ul{
+	list-style-type: none;
+	padding: 0px;
+	padding-top: 6px;
+}
+
+.file-menu-wrapper ul li{
+	display: inline;
+	cursor: pointer;
+	margin-left: 20px;
+	color: lightgrey;
+}
+
+.file-menu-wrapper ul li:hover {
+	color: grey;
+}
+
+
+.dropdown-content1,.dropdown-content2,.dropdown-content3 {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 100px;
+}
+
+.dropdown-content1 {
+	margin-left: 20px;
+}
+
+.dropdown-content2 {
+	margin-left: 70px;
+}
+
+.dropdown-content3 {
+	margin-left: 120px;
+}
+
+.dropdown-content1 a,.dropdown-content2 a,.dropdown-content3 a {
+    color: black;
+    padding: 12px 10px;
+    text-decoration: none;
+    display: block;
+    z-index: 2;
+}
+
+.dropdown-content1 a:hover {background-color: #ddd;}
+.dropdown-content2 a:hover {background-color: #ddd;}
+.dropdown-content3 a:hover {background-color: #ddd;}
+
+.file-menu-wrapper ul li:hover .dropdown-content1 {display: block;z-index: 2;}
+.file-menu-wrapper ul li:hover .dropdown-content2 {display: block;z-index: 2;}
+.file-menu-wrapper ul li:hover .dropdown-content3 {display: block;z-index: 2;}
+
 .plus-button{
 	float: left;
 	padding: 10px;
+	border: none;
+	background: lightgrey;
 }
 
 .minus-button{
 	float: right;
 	padding: 10px;
+	border: none;
+	background: lightgrey;
 }
 
 .layers-wrapper{
@@ -17,3 +78,4 @@
 	width: 100%;
 	height: 40px;
 }
+
