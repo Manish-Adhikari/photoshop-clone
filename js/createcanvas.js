@@ -10,7 +10,7 @@ function createCanvas(brushColor, layerIndex) {
     this.canvas.style.position = 'absolute';
     // this.canvas.style.border = '1px solid black';
     this.canvas.style.zIndex = '1';
-    this.brushColor = brushColor;
+    this.brushColor = brushColor || 'blue';
     this.flag = false;
     this.context = this.canvas.getContext('2d');
     this.context.lineWidth = 20;
@@ -22,7 +22,14 @@ function createCanvas(brushColor, layerIndex) {
     this.layerDiv.style.height = '30px';
     this.layerDiv.style.width = '100%';
     this.layerDiv.style.background = 'lightgrey';
-    this.textHere = document.createTextNode('Layer ' + this.layerIndex);
+    if(bgToggleFlag) {
+    this.textHere = document.createTextNode('Background');
+    bgToggleFlag = false;
+    }
+
+    else {
+      this.textHere = document.createTextNode('Layer ' + this.layerIndex);  
+    }
     this.layerDiv.appendChild(this.textHere);
     this.layerDiv.style.marginBottom = '3px';
     this.layerDiv.style.textAlign = 'center';

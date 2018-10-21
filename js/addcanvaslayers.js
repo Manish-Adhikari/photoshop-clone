@@ -16,21 +16,35 @@ var colorArray = ['red',
 ]
 
 addLayer.onclick = function() {
-    console.log('layer added');
-    brushColor = colorArray[Math.floor(Math.random()*colorArray.length)];
-    console.log('Brush Color: ' + brushColor);
-    myCanvas = new createCanvas(brushColor,layerIndex);
-    canvasArray.push(myCanvas);
-    layerIndex++;
-    console.log(canvasArray);
+    checkFlag();
+    if (backgroundFlag) {
+        console.log('layer added');
+        brushColor = colorArray[Math.floor(Math.random() * colorArray.length)];
+        console.log('Brush Color: ' + brushColor);
+        myCanvas = new createCanvas(brushColor, layerIndex);
+        canvasArray.push(myCanvas);
+        layerIndex++;
+        console.log(canvasArray);
+    }
 }
 
 removeLayer.onclick = function() {
-    console.log('layer removed');
-    lastElement = canvasArray[canvasArray.length - 1];
-    lastElement.canvas.remove();
-    lastElement.layerDiv.remove();
-    canvasArray.splice(-1, 1);
-    console.log(canvasArray);
-    layerIndex--;
+    checkFlag();
+    if (backgroundFlag) {
+        console.log('layer removed');
+        lastElement = canvasArray[canvasArray.length - 1];
+        lastElement.canvas.remove();
+        lastElement.layerDiv.remove();
+        canvasArray.splice(-1, 1);
+        console.log(canvasArray);
+        layerIndex--;
+        console.log(layerIndex);
+    }
+}
+
+function checkFlag() {
+    if (layerIndex < 0) {
+        backgroundFlag = false;
+        layerIndex = 0;
+    }
 }
