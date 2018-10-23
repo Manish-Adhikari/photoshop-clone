@@ -8,7 +8,6 @@ function createCanvas(brushColor, layerIndex) {
     this.canvas.height = this.canvasWrapper.offsetHeight;
     this.canvas.width = this.canvasWrapper.offsetWidth;
     this.canvas.style.position = 'absolute';
-    // this.canvas.style.border = '1px solid black';
     this.canvas.style.zIndex = '1';
     this.brushColor = brushColor || 'blue';
     this.flag = false;
@@ -22,19 +21,17 @@ function createCanvas(brushColor, layerIndex) {
     this.layerDiv.style.height = '30px';
     this.layerDiv.style.width = '100%';
     this.layerDiv.style.background = 'lightgrey';
-    if(bgToggleFlag) {
-    this.textHere = document.createTextNode('Background');
-    bgToggleFlag = false;
+    if (bgToggleFlag) {
+        this.textHere = document.createTextNode('Background');
+        bgToggleFlag = false;
+    } else {
+        this.textHere = document.createTextNode('Layer ' + this.layerIndex);
     }
-
-    else {
-      this.textHere = document.createTextNode('Layer ' + this.layerIndex);  
-    }
-    this.layerDiv.appendChild(this.textHere);
     this.layerDiv.style.marginBottom = '3px';
     this.layerDiv.style.textAlign = 'center';
     this.layerDiv.style.paddingTop = '10px';
-     
+    this.layerDiv.appendChild(this.textHere);
+
     that = this;
 
     (function(myLayer, myCanvas, index, brushColor) {
@@ -44,9 +41,12 @@ function createCanvas(brushColor, layerIndex) {
             myLayer.style.background = 'white';
             myCanvas.style.zIndex = '1';
             myCanvas.style.position = 'absolute';
-            console.log('iffe fired ' + index);
+            console.log('Layer selected: ' + index);
             that.brushColor = brushColor;
             that.context = myCanvas.getContext('2d');
+            removeLayer.onclick = function() {
+                removeSelectedLayer(index);
+            }
         }
     })(this.layerDiv, this.canvas, this.layerIndex, this.brushColor);
 

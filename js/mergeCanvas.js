@@ -16,5 +16,5 @@ canvasMerge.onclick = function() {
     canvasArray = [];
     canvasArray.push(newCanvas);
     layerIndex = 1;
-    console.log(canvasArray);
+    console.log('Layers Merged');
 }
