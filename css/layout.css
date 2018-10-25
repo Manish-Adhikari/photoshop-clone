@@ -41,6 +41,7 @@ body{
 	float: right;
 	background: #474747;
 	border: 1px solid black;
+	position: relative;
 }
 
 .tools-wrapper{

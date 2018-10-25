@@ -29,8 +29,14 @@
                     </div>
                 </li>
                 <li>
-                    <span>Filters</span>
+                    <span>Images</span>
                     <div class="dropdown-content3">
+                        <a href="#"><input type="file" id="add-image" value="Add Image"></a>
+                    </div>
+                </li>
+                <li>
+                    <span>Filters</span>
+                    <div class="dropdown-content4">
                         <a href="#" id="grayscale">Grayscale</a>
                         <a href="#" id="saturation">Saturation</a>
                         <a href="#" id="black-white">Black & White</a>
@@ -48,17 +54,21 @@
             <div class="layers-wrapper">
                 <div class="layers-wrapper-button">
                     <input type="button" name="+" value="+" class="plus-button">
-                    <span style="font-size: 20px;color: white;padding-left: 15px;">Layers</span>
                     <input type="button" name="-" value="-" class="minus-button">
+                    <span style="color: lightblue; margin-left: 12px; ">Layers</span>
+                    <input type="button" name="+" value="&darr;" class="lower-arrow">
+                    <input type="button" name="-" value="&uarr;" class="up-arrow">
                 </div>
             </div>
         </div>
     </div>
 </body>
-<script type="text/javascript" src="js/downloadCanvas.js"></script>
-<script type="text/javascript" src="js/addcanvaslayers.js"></script>
-<script type="text/javascript" src="js/createcanvas.js"></script>
-<script type="text/javascript" src="js/mergeCanvas.js"></script>
-<script type="text/javascript" src="js/loadBackground.js"></script>
-<script type="text/javascript" src="js/addFilters.js"></script>
+<script type="text/javascript" src="js/layers/history.js"></script>
+<script type="text/javascript" src="js/canvas/downloadCanvas.js"></script>
+<script type="text/javascript" src="js/layers/mergeLayer.js"></script>
+<script type="text/javascript" src="js/canvas/filters.js"></script>
+<script type="text/javascript" src="js/canvas/createcanvas.js"></script>
+<script type="text/javascript" src="js/layers/createlayer.js"></script>
+<script type="text/javascript" src="js/main.js"></script>
+<!-- <script type="text/javascript" src="js/.js"></script> -->
 </html>
