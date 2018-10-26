@@ -3,11 +3,11 @@ class history {
 		this.history = [];
 	}
 
-	historyPush() {
+	// historyPush() {
 
-	}
+	// }
 
-	historyPop() {
+	// historyPop() {
 		
-	}
+	// }
 }
