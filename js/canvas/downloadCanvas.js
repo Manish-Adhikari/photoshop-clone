@@ -5,11 +5,24 @@ class download {
         this.downloadCanvas = downloadCanvas;
 
     }
+
     download(canvas, filename) {
         var lnk = document.createElement('a'),
             e;
         lnk.download = filename;
-        lnk.href = canvas.toDataURL("image/png;base64");
+
+        let cnvs = document.createElement('canvas');
+        document.body.appendChild(cnvs);
+        cnvs.height = 588;
+        cnvs.width = 950;
+        let cxt = cnvs.getContext('2d');
+
+        cxt.fillStyle="#FFFAFA";
+        cxt.fillRect(0,0,cnvs.width,cnvs.height);
+
+        cxt.drawImage(canvas,0,0);
+
+        lnk.href = cnvs.toDataURL("image/png;base64");
 
         if (document.createEvent) {
             e = document.createEvent("MouseEvents");
@@ -21,5 +34,6 @@ class download {
         } else if (lnk.fireEvent) {
             lnk.fireEvent("onclick");
         }
+        document.body.removeChild(cnvs);
     }
 }

@@ -132,22 +132,22 @@
 
 .select-tool {
     position: absolute;
-    top: 10px;
+    top: 20px;
 }
 
 .brush-tool {
     position: absolute;
-    top: 50px;
+    top: 70px;
 }
 
 .text-tool {
     position: absolute;
-    top: 130px;
+    top: 170px;
 }
 
 .eraser-tool {
     position: absolute;
-    top: 90px;
+    top: 120px;
 }
 
 .select-tool,

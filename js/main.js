@@ -9,11 +9,13 @@ let eraserTool = document.getElementById('eraser-tool-image');
 let brushTool = document.getElementById('brush-tool-image');
 let colorPicker = document.getElementById('color-picker');
 let slider = document.getElementById('slider');
+let newFile = document.getElementById('new-file');
 
 
 class mainFile {
     constructor() {
         this.layerArray = [];
+        this.newFile = newFile;
         this.addLayer = addLayer;
         this.removeLayer = removeLayer;
         this.upArrow = upArrow;
@@ -24,26 +26,24 @@ class mainFile {
         this.textTool = textTool;
         this.brushTool = brushTool;
         this.eraserTool = eraserTool;
+        this.bgFlag = false;
         this.filter = new filters();
         this.merge = new merge();
         this.download = new download();
 
         this.addLayer.addEventListener("click", (this.createNew = event => {
-            let layers = new layer(this.layerArray.length);
+            if (this.layerArray.length>0) {
+                this.bgFlag = false;
+                this.createLayers(this.bgFlag);
+            }
+        }));
 
-            this.layerArray.push(layers);
-            this.resetLayers();
-            this.resetBorders();
-            this.currentLayer = layers;
-            this.resetLayerBg();
-            layers.layerDiv.style.backgroundColor = '#FFF';
-
-            layers.layerDiv.addEventListener("click", event => {
-                this.resetLayerBg();
-                this.currentLayer = layers;
-                console.log(this.currentLayer.artBoard.cIndex);
-                this.currentLayer.layerDiv.style.backgroundColor = "#FFF";
-            });
+        this.newFile.addEventListener("click", (this.createNew = event => {
+            if (this.layerArray.length == 0) {
+                this.bgFlag = true;
+                console.log(this.layerArray);
+                this.createLayers(this.bgFlag);
+            }
         }));
 
         this.removeLayer.addEventListener("click", event => {
@@ -188,19 +188,43 @@ class mainFile {
             this.currentLayer.artBoard.sliderContainer.style.display = 'block';
 
             this.currentLayer.artBoard.canvas.addEventListener("click", e => {
-                if(this.textFlag) {
-                let text = prompt('Text:', '');
-                this.currentLayer.artBoard.context.fillStyle = this.colorPicker.value;
+                if (this.textFlag) {
+                    let text = prompt('Text:', '');
+                    this.currentLayer.artBoard.context.fillStyle = this.colorPicker.value;
 
-                if (text) {
-                    let pos = this.relativePos(e, this.currentLayer.artBoard.canvas);
-                    this.currentLayer.artBoard.context.font = this.currentLayer.artBoard.context.lineWidth + 'px sans-serif';
-                    this.currentLayer.artBoard.context.fillText(text, pos.x, pos.y);
+                    if (text) {
+                        let pos = this.relativePos(e, this.currentLayer.artBoard.canvas);
+                        this.currentLayer.artBoard.context.font = this.currentLayer.artBoard.context.lineWidth + 'px sans-serif';
+                        this.currentLayer.artBoard.context.fillText(text, pos.x, pos.y);
+                    }
                 }
-             }
             });
         });
 
+    }
+
+    createLayers(flag) {
+        let layers = new layer(this.layerArray.length);
+
+        this.layerArray.push(layers);
+        this.resetLayers();
+        this.resetBorders();
+        this.currentLayer = layers;
+        this.resetLayerBg();
+        layers.layerDiv.style.backgroundColor = '#FFF';
+        console.log(flag);
+        if(flag) {
+            this.currentLayer.artBoard.canvas.style.background = 'white';
+            // this.currentLayer.artBoard.context.fillStyle="#FFFAFA";
+            // this.currentLayer.artBoard.context.fillRect(0,0,this.currentLayer.artBoard.canvas.width,this.currentLayer.artBoard.canvas.height);
+        }
+
+        layers.layerDiv.addEventListener("click", event => {
+            this.resetLayerBg();
+            this.currentLayer = layers;
+            console.log(this.currentLayer.artBoard.cIndex);
+            this.currentLayer.layerDiv.style.backgroundColor = "#FFF";
+        });
     }
 
     resetBorders() {
