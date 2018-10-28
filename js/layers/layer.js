@@ -9,7 +9,7 @@ class layer{
         this.layersWrapper = layersWrapper;
         this.layersWrapper.appendChild(this.layerDiv);
         this.layerDiv.style.height = '30px';
-        this.layerDiv.style.width = '150px';
+        this.layerDiv.style.width = '170px';
         this.layerDiv.style.background = 'lightgrey';
         this.layerDiv.style.position = 'absolute';
         this.layerDiv.style.top = '1px';

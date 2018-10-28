@@ -1,13 +1,5 @@
 let canvasWrapper = document.getElementsByClassName('canvas-wrapper')[0];
-let colorArray = ['red',
-    'blue',
-    'green',
-    'pink',
-    'brown',
-    'yellow',
-    'purple',
-    'grey'
-];
+let sliderContainer = document.getElementsByClassName('slidecontainer')[0];
 
 class artBoard {
 
@@ -20,6 +12,14 @@ class artBoard {
         this.canvas.width = this.canvasWrapper.offsetWidth;
         this.canvas.style.position = 'absolute';
         this.context = this.canvas.getContext('2d');
+        this.sliderContainer = sliderContainer;
+        this.sliderContainer.style.display = 'none';
+        this.slider = slider;
+
+        this.brushSelectFlag = false;
+        this.selectSelectFlag = false;
+        this.textSelectFlag = false;
+        this.eraserSelectFlag = false;
 
         this.offsetX = this.canvas.offsetLeft;
         this.offsetY = this.canvas.offsetTop;
@@ -46,66 +46,83 @@ class artBoard {
         this.startX;
         this.startY;
 
-        this.brushFlag = false;
-        this.imgFlag = false;
         this.flag = false;
-        this.brushColor = colorArray[Math.floor(Math.random() * colorArray.length)];;
-        //this.context.lineWidth = 20;
+        this.brushColor;
+        this.brushSize;
+        this.context.lineWidth = this.slider.value;
+        this.brushSize = this.slider.value / 2;
 
-        // this.canvas.addEventListener('mousemove', (e) => this.plotPoints(e, this));
-        // this.canvas.addEventListener('mousedown', (e) => this.enableFlag(e, this));
-        // this.canvas.addEventListener('mouseup', (e) => this.disableFlag(this));
+        this.slider.addEventListener("input", event => {
+            this.context.lineWidth = this.slider.value;
+            this.brushSize = this.slider.value / 2;
+            console.log(this.slider.value);
+        });
+
         this.canvas.addEventListener("mousedown", (e) => {
-            if (this.brushFlag) {
+            if (this.brushSelectFlag || this.eraserSelectFlag) {
                 this.enableFlag(e, this);
+                console.log(this.brushSelectFlag);
             }
-            if (this.imgFlag) {
-                this.handleMouseDown(e);
-                console.log('mousedown');
-            }
+            // if (this.imgFlag) {
+            //     this.handleMouseDown(e);
+            //     console.log('mousedown');
+            // }
         });
 
         this.canvas.addEventListener("mousemove", (e) => {
-            if (this.brushFlag) {
+            if (this.brushSelectFlag || this.eraserSelectFlag) {
                 this.plotPoints(e, this);
             }
-            if (this.imgFlag) {
-            this.handleMouseMove(e);
-            console.log('mousemove');
-        }
+            //     if (this.imgFlag) {
+            //     this.handleMouseMove(e);
+            //     console.log('mousemove');
+            // }
         });
 
         this.canvas.addEventListener("mouseup", (e) => {
-            if (this.brushFlag) {
+            if (this.brushSelectFlag || this.eraserSelectFlag) {
                 this.disableFlag(this);
             }
-            if (this.imgFlag) {
-            this.handleMouseUp(e);
-            console.log('mouseup');
-        }
+            //     if (this.imgFlag) {
+            //     this.handleMouseUp(e);
+            //     console.log('mouseup');
+            // }
         });
 
-        this.canvas.addEventListener("mouseout", (e) => {
-            if (this.imgFlag) {
-            this.handleMouseOut(e);;
-            console.log('mouseout');
-            }
-        });
+        // this.canvas.addEventListener("mouseout", (e) => {
+        //     if (this.imgFlag) {
+        //     this.handleMouseOut(e);;
+        //     console.log('mouseout');
+        //     }
+        // });
+    }
+
+    resetSelectionFlag() {
+        this.brushSelectFlag = false;
+        this.selectSelectFlag = false;
+        this.textSelectFlag = false;
+        this.eraserSelectFlag = false;
     }
 
     plotPoints(event, that) {
-        if (that.flag) {
+        if (that.flag && that.brushSelectFlag) {
+            that.context.globalCompositeOperation = "source-over";
             that.context.fill();
             that.context.fillStyle = that.brushColor;
             that.context.lineTo(event.offsetX, event.offsetY)
             that.context.stroke();
             that.context.strokeStyle = that.brushColor;
             that.context.beginPath();
-            that.context.arc(event.offsetX, event.offsetY, 10, 0, 2 * Math.PI);
+            that.context.arc(event.offsetX, event.offsetY, that.brushSize, 0, 2 * Math.PI);
             that.context.fill();
             that.context.fillStyle = that.brushColor;
             that.context.beginPath();
             that.context.moveTo(event.offsetX, event.offsetY)
+        }
+        if (that.flag && that.eraserSelectFlag) {
+            that.context.globalCompositeOperation = "destination-out";
+            that.context.arc(event.offsetX, event.offsetY, that.brushSize, 0, Math.PI * 2, false);
+            that.context.fill();
         }
     }
 

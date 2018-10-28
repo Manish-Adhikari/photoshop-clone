@@ -3,42 +3,47 @@ let removeLayer = document.getElementsByClassName('minus-button')[0];
 let upArrow = document.getElementsByClassName('up-arrow')[0];
 let lowerArrow = document.getElementsByClassName('lower-arrow')[0];
 let addImage = document.getElementById('add-image');
+let selectTool = document.getElementById('select-tool-image');
+let textTool = document.getElementById('text-tool-image');
+let eraserTool = document.getElementById('eraser-tool-image');
+let brushTool = document.getElementById('brush-tool-image');
+let colorPicker = document.getElementById('color-picker');
+let slider = document.getElementById('slider');
+
 
 class mainFile {
     constructor() {
         this.layerArray = [];
-        //this.history = [];
         this.addLayer = addLayer;
         this.removeLayer = removeLayer;
         this.upArrow = upArrow;
         this.lowerArrow = lowerArrow;
         this.addImage = addImage;
+        this.colorPicker = colorPicker;
+        this.selectTool = selectTool;
+        this.textTool = textTool;
+        this.brushTool = brushTool;
+        this.eraserTool = eraserTool;
         this.filter = new filters();
         this.merge = new merge();
         this.download = new download();
-        //this.history = new history();
 
         this.addLayer.addEventListener("click", (this.createNew = event => {
             let layers = new layer(this.layerArray.length);
 
             this.layerArray.push(layers);
             this.resetLayers();
+            this.resetBorders();
             this.currentLayer = layers;
-            this.currentLayer.artBoard.brushFlag = true;
-            this.currentLayer.artBoard.context.lineWidth = 20;
-            //this.history = [];
             this.resetLayerBg();
             layers.layerDiv.style.backgroundColor = '#FFF';
 
             layers.layerDiv.addEventListener("click", event => {
                 this.resetLayerBg();
                 this.currentLayer = layers;
-                //this.history = [];
                 console.log(this.currentLayer.artBoard.cIndex);
                 this.currentLayer.layerDiv.style.backgroundColor = "#FFF";
             });
-
-            //this.history.push(this.currentLayer.artBoard.canvas.toDataURL());
         }));
 
         this.removeLayer.addEventListener("click", event => {
@@ -49,9 +54,8 @@ class mainFile {
                 if (this.layerArray.length != 0) {
                     this.currentLayer = this.layerArray[this.layerArray.length - 1];
                 }
-                //this.history = [];
-                //this.history.push(this.currentLayer.artBoard.canvas.toDataURL());
                 this.resetLayers();
+                this.resetBorders();
             }
         });
 
@@ -83,6 +87,16 @@ class mainFile {
 
         this.filter.grayscale.addEventListener("click", event => {
             this.filter.grayscaleFilter(this.currentLayer);
+
+        });
+
+        this.filter.sepia.addEventListener("click", event => {
+            this.filter.sepiaFilter(this.currentLayer);
+
+        });
+
+        this.filter.newF.addEventListener("click", event => {
+            this.filter.newFilter(this.currentLayer);
 
         });
 
@@ -130,21 +144,75 @@ class mainFile {
                     this.currentLayer.artBoard.loadImage(event.target.result);
                 }
             }
-            //this.history = [];
             this.resetLayerBg();
             layers.layerDiv.style.backgroundColor = '#FFF';
 
             layers.layerDiv.addEventListener("click", event => {
                 this.resetLayerBg();
                 this.currentLayer = layers;
-                //this.history = [];
                 console.log(this.currentLayer.artBoard.cIndex);
                 this.currentLayer.layerDiv.style.backgroundColor = "#FFF";
             });
 
         });
+
+        this.colorPicker.addEventListener("input", event => {
+            this.currentLayer.artBoard.brushColor = this.colorPicker.value;
+        });
+
+        this.brushTool.addEventListener("click", event => {
+            this.currentLayer.artBoard.resetSelectionFlag();
+            this.resetBorders();
+            this.brushTool.style.border = '1px solid grey';
+            this.currentLayer.artBoard.brushSelectFlag = true;
+            this.currentLayer.artBoard.canvas.style.cursor = 'crosshair';
+            this.currentLayer.artBoard.sliderContainer.style.display = 'block';
+        });
+
+        this.eraserTool.addEventListener("click", event => {
+            this.currentLayer.artBoard.resetSelectionFlag();
+            this.resetBorders();
+            console.log('eraser');
+            this.eraserTool.style.border = '1px solid grey';
+            this.currentLayer.artBoard.eraserSelectFlag = true;
+            this.currentLayer.artBoard.canvas.style.cursor = 'move';
+            this.currentLayer.artBoard.sliderContainer.style.display = 'block';
+        });
+
+        this.textTool.addEventListener("click", event => {
+            this.currentLayer.artBoard.resetSelectionFlag();
+            this.resetBorders();
+            console.log('Text');
+            this.textTool.style.border = '1px solid grey';
+            this.textFlag = true;
+            this.currentLayer.artBoard.sliderContainer.style.display = 'block';
+
+            this.currentLayer.artBoard.canvas.addEventListener("click", e => {
+                if(this.textFlag) {
+                let text = prompt('Text:', '');
+                this.currentLayer.artBoard.context.fillStyle = this.colorPicker.value;
+
+                if (text) {
+                    let pos = this.relativePos(e, this.currentLayer.artBoard.canvas);
+                    this.currentLayer.artBoard.context.font = this.currentLayer.artBoard.context.lineWidth + 'px sans-serif';
+                    this.currentLayer.artBoard.context.fillText(text, pos.x, pos.y);
+                }
+             }
+            });
+        });
+
     }
 
+    resetBorders() {
+        this.brushTool.style.border = 'none';
+        this.eraserTool.style.border = 'none';
+        this.textTool.style.border = 'none';
+        this.textFlag = false;
+        if (this.currentLayer) {
+            this.currentLayer.artBoard.sliderContainer.style.display = 'none';
+            this.currentLayer.artBoard.canvas.style.cursor = 'default';
+        }
+    }
 
     resetLayerBg() {
         this.layerArray.forEach(layer => {
@@ -154,9 +222,17 @@ class mainFile {
 
     resetLayers() {
         this.layerArray.forEach(layer => {
-            layer.layerDiv.style.top = this.layerArray.indexOf(layer) * 41 + 30 + "px";
+            layer.layerDiv.style.top = this.layerArray.indexOf(layer) * 41 + 38 + "px";
             layer.artBoard.canvas.style.zIndex = this.layerArray.indexOf(layer);
         });
+    }
+
+    relativePos(event, element) {
+        let rect = element.getBoundingClientRect();
+        return {
+            x: Math.floor(event.clientX - rect.left),
+            y: Math.floor(event.clientY - rect.top)
+        };
     }
 }
 

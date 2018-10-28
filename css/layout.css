@@ -1,15 +1,11 @@
 body{
-	/*padding-top: 15px;*/
-	/*background-image: url('../images/bg.jpg');*/
 	background:  #12222A;
 }
 
 .main-wrapper {
 	margin:0 auto;
-	/*width:185.47140649149924vh;*/
 	width: 1200px;
 	height: 640px;
-	/*height: 95.82689335394127vh;*/
 	border: 2px;
 	border-style: groove;
 	border-color:blue green blue green;
@@ -21,6 +17,11 @@ body{
 	background: #474747;
 }
 
+.file-menu-wrapper ul{
+	width: 500px;
+	float:left;
+}
+
 .tools-canvas-layers-wrapper{
 	width: 100%;
 	height: 600px;
@@ -30,13 +31,13 @@ body{
 }
 
 .tools-canvas-wrapper{
-	width: 1040px;
+	width: 1020px;
 	height: 98%;
 	float: left;
 }
 
 .layers-wrapper{
-	width: 150px;
+	width: 170px;
 	height: 500px;
 	float: right;
 	background: #474747;
@@ -45,16 +46,18 @@ body{
 }
 
 .tools-wrapper{
-	width: 80px;
+	width: 60px;
 	height: 500px;
 	float: left;
 	background: #474747;
 	border: 1px solid black;
+	margin-right: 8px; 
+	position: relative;
 }
 
 .canvas-wrapper{
 	width: 950px;
 	height: 100%;
-	float: right;
-	/*background: lightblue;*/
+	float: left;
+	/*background: white;*/
 }

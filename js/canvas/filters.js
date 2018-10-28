@@ -1,15 +1,45 @@
 let grayscale = document.getElementById('grayscale');
+let sepia = document.getElementById('sepia');
+let newF = document.getElementById('new-filter')
 
 class filters {
     constructor() {
         this.grayscale = grayscale;
+        this.sepia = sepia;
+        this.newF = newF;
     }
 
     grayscaleFilter(currentLayer) {
         this.currentLayer = currentLayer;
         this.imgDatas(this.currentLayer);
         this.RGBAdata = this.getPixelMatrix(this.context, 0, 0, this.width - 1, this.height - 1, this.width, this.height, (r, g, b, a) => { var grey = 0.21 * r + 0.72 * g + 0.07 * b; return { r: grey, g: grey, b: grey, a } });
-        this.drawImg(this.RGBAdata,this.currentLayer);
+        this.drawImg(this.RGBAdata, this.currentLayer);
+    }
+
+    sepiaFilter(currentLayer) {
+        this.currentLayer = currentLayer;
+        this.imgDatas(this.currentLayer);
+        this.RGBAdata = this.getPixelMatrix(this.context, 0, 0, this.width - 1, this.height - 1, this.width, this.height,
+            (r, g, b, a) => {
+                let tr = 0.393*r + 0.769*g + 0.189*b;
+                let tg = 0.349*r + 0.686*g + 0.168*b;
+                let tb = 0.272*r + 0.534*g + 0.131*b;
+                return { r: tr, g: tg, b: tb, a }
+            });
+        this.drawImg(this.RGBAdata, this.currentLayer);
+    }
+
+    newFilter(currentLayer) {
+        this.currentLayer = currentLayer;
+        this.imgDatas(this.currentLayer);
+        this.RGBAdata = this.getPixelMatrix(this.context, 0, 0, this.width - 1, this.height - 1, this.width, this.height,
+            (r, g, b, a) => {
+                let tr = 0.349*r + 0.686*g + 0.168*b;
+                let tg = 0.272*r + 0.534*g + 0.131*b;
+                let tb = 0.393*r + 0.769*g + 0.189*b;
+                return { r: tr, g: tg, b: tb, a }
+            });
+        this.drawImg(this.RGBAdata, this.currentLayer);
     }
 
     getPixelMatrix(c, sx, sy, ex, ey, w, h, t) {
@@ -38,7 +68,7 @@ class filters {
         this.imageArray = RGBAdata;
         for (let i = 0; i < this.imageArray.length; i++) {
             for (let j = 0; j < this.imageArray[i].length; j++) {
-                currentLayer.artBoard.context.fillStyle = "rgba(" + this.imageArray[i][j].r + "," + this.imageArray[i][j].g + "," + this.imageArray[i][j].b + ","+this.imageArray[i][j].a+")";
+                currentLayer.artBoard.context.fillStyle = "rgba(" + this.imageArray[i][j].r + "," + this.imageArray[i][j].g + "," + this.imageArray[i][j].b + "," + this.imageArray[i][j].a + ")";
                 currentLayer.artBoard.context.fillRect(i, j, 1, 1);
             }
         }

@@ -10,7 +10,7 @@
 
 <body>
     <div class="main-wrapper">
-        <div class="file-menu-wrapper">
+        <div class="file-menu-wrapper clearfix">
             <ul>
                 <li>
                     <span>File</span>
@@ -31,22 +31,42 @@
                 <li>
                     <span>Images</span>
                     <div class="dropdown-content3">
-                        <a href="#"><input type="file" id="add-image" value="Add Image"></a>
+                        <a href="#">
+                            <input type="file" id="add-image" value="Add Image">
+                        </a>
                     </div>
                 </li>
                 <li>
                     <span>Filters</span>
                     <div class="dropdown-content4">
                         <a href="#" id="grayscale">Grayscale</a>
-                        <a href="#" id="saturation">Saturation</a>
-                        <a href="#" id="black-white">Black & White</a>
+                        <a href="#" id="sepia">Sepia</a>
+                        <a href="#" id="new-filter">New Filter</a>
                     </div>
                 </li>
             </ul>
+            <div class="slidecontainer">
+                <input id="slider" type="range" min="1" max="50" value="10">
+            </div>
         </div>
         <div class="tools-canvas-layers-wrapper clearfix">
             <div class="tools-canvas-wrapper clearfix">
                 <div class="tools-wrapper">
+                    <div class="select-tool">
+                        <img src="images/select.png" id="select-tool-image">
+                    </div>
+                    <div class="brush-tool">
+                        <img src="images/brush.png" id="brush-tool-image">
+                    </div>
+                    <div class="eraser-tool">
+                        <img src="images/eraser.png" id="eraser-tool-image">
+                    </div>
+                    <div class="text-tool">
+                        <img src="images/text.png" id="text-tool-image">
+                    </div>
+                    <div class="color-tool">
+                        <input name="Color Picker" type="color" id="color-picker">
+                    </div>
                 </div>
                 <div class="canvas-wrapper">
                 </div>
@@ -55,7 +75,7 @@
                 <div class="layers-wrapper-button">
                     <input type="button" name="+" value="+" class="plus-button">
                     <input type="button" name="-" value="-" class="minus-button">
-                    <span style="color: lightblue; margin-left: 12px; ">Layers</span>
+                    <span style="color: lightblue; margin-left: 12px; font-size: 17px; font-family: sans-serif;">Layers</span>
                     <input type="button" name="+" value="&darr;" class="lower-arrow">
                     <input type="button" name="-" value="&uarr;" class="up-arrow">
                 </div>
@@ -67,8 +87,9 @@
 <script type="text/javascript" src="js/canvas/downloadCanvas.js"></script>
 <script type="text/javascript" src="js/layers/mergeLayer.js"></script>
 <script type="text/javascript" src="js/canvas/filters.js"></script>
-<script type="text/javascript" src="js/canvas/createcanvas.js"></script>
-<script type="text/javascript" src="js/layers/createlayer.js"></script>
+<script type="text/javascript" src="js/canvas/artboard.js"></script>
+<script type="text/javascript" src="js/layers/layer.js"></script>
 <script type="text/javascript" src="js/main.js"></script>
 <!-- <script type="text/javascript" src="js/.js"></script> -->
+
 </html>

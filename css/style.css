@@ -1,26 +1,27 @@
-.file-menu-wrapper{
-	
+.file-menu-wrapper {}
+
+.file-menu-wrapper ul {
+    list-style-type: none;
+    padding: 0px;
+    padding-top: 6px;
 }
 
-.file-menu-wrapper ul{
-	list-style-type: none;
-	padding: 0px;
-	padding-top: 6px;
-}
-
-.file-menu-wrapper ul li{
-	display: inline;
-	cursor: pointer;
-	margin-left: 20px;
-	color: lightgrey;
+.file-menu-wrapper ul li {
+    display: inline;
+    cursor: pointer;
+    margin-left: 20px;
+    color: lightgrey;
 }
 
 .file-menu-wrapper ul li:hover {
-	color: grey;
+    color: grey;
 }
 
 
-.dropdown-content1,.dropdown-content2,.dropdown-content3, .dropdown-content4 {
+.dropdown-content1,
+.dropdown-content2,
+.dropdown-content3,
+.dropdown-content4 {
     display: none;
     position: absolute;
     background-color: #f1f1f1;
@@ -28,74 +29,163 @@
 }
 
 .dropdown-content1 {
-	margin-left: 20px;
+    margin-left: 20px;
 }
 
 .dropdown-content2 {
-	margin-left: 70px;
+    margin-left: 70px;
 }
 
 .dropdown-content3 {
-	margin-left: 120px;
+    margin-left: 120px;
 }
 
 .dropdown-content4 {
-	margin-left: 190px;
+    margin-left: 190px;
 }
 
-.dropdown-content1 a,.dropdown-content2 a,.dropdown-content3 a,.dropdown-content4 a {
+.dropdown-content1 a,
+.dropdown-content2 a,
+.dropdown-content3 a,
+.dropdown-content4 a {
     color: black;
     padding: 12px 10px;
     text-decoration: none;
     display: block;
 }
 
-.dropdown-content1 a:hover {background-color: #ddd;}
-.dropdown-content2 a:hover {background-color: #ddd;}
-.dropdown-content3 a:hover {background-color: #ddd;}
-.dropdown-content4 a:hover {background-color: #ddd;}
-
-.file-menu-wrapper ul li:hover .dropdown-content1 {display: block;z-index: 50;}
-.file-menu-wrapper ul li:hover .dropdown-content2 {display: block;z-index: 50;}
-.file-menu-wrapper ul li:hover .dropdown-content3 {display: block;z-index: 50;}
-.file-menu-wrapper ul li:hover .dropdown-content4 {display: block;z-index: 50;}
-
-.plus-button{
-	float: left;
-	padding: 6px;
-	margin-right: 2px;
-	border: none;
-	background: lightblue;
-}
-.up-arrow{
-	float: right;
-	padding: 6px;
-	border: none;
-	background: lightblue;
+.dropdown-content1 a:hover {
+    background-color: #ddd;
 }
 
-.minus-button{
-	float: left;
-	padding: 6px;
-	border: none;
-	background: lightblue;
+.dropdown-content2 a:hover {
+    background-color: #ddd;
 }
 
-.lower-arrow{
-	float: right;
-	padding: 6px;
-	border: none;
-	margin-left: 2px;
-	background: lightblue;
+.dropdown-content3 a:hover {
+    background-color: #ddd;
 }
 
-.layers-wrapper{
-	overflow-y : auto;
-	overflow-x: hidden;
+.dropdown-content4 a:hover {
+    background-color: #ddd;
 }
 
-.layers-wrapper-button{
-	width: 100%;
-	height: 40px;
+.file-menu-wrapper ul li:hover .dropdown-content1 {
+    display: block;
+    z-index: 50;
 }
 
+.file-menu-wrapper ul li:hover .dropdown-content2 {
+    display: block;
+    z-index: 50;
+}
+
+.file-menu-wrapper ul li:hover .dropdown-content3 {
+    display: block;
+    z-index: 50;
+}
+
+.file-menu-wrapper ul li:hover .dropdown-content4 {
+    display: block;
+    z-index: 50;
+}
+
+.plus-button {
+    float: left;
+    padding: 8px;
+    margin-right: 2px;
+    border: none;
+    background: lightblue;
+}
+
+.up-arrow {
+    float: right;
+    padding: 8px;
+    border: none;
+    background: lightblue;
+}
+
+.minus-button {
+    float: left;
+    padding: 8px;
+    border: none;
+    background: lightblue;
+}
+
+.lower-arrow {
+    float: right;
+    padding: 8px;
+    border: none;
+    margin-left: 2px;
+    background: lightblue;
+}
+
+.layers-wrapper {
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.layers-wrapper-button {
+    width: 100%;
+    height: 40px;
+}
+
+.select-tool {
+    position: absolute;
+    top: 10px;
+}
+
+.brush-tool {
+    position: absolute;
+    top: 50px;
+}
+
+.text-tool {
+    position: absolute;
+    top: 130px;
+}
+
+.eraser-tool {
+    position: absolute;
+    top: 90px;
+}
+
+.select-tool,
+.brush-tool,
+.text-tool,
+.eraser-tool {
+    left: 15px;
+}
+
+#select-tool-image:hover,
+#brush-tool-image:hover,
+#text-tool-image:hover,
+#eraser-tool-image:hover {
+    border: 1px solid grey;
+}
+
+.color-tool {
+    position: absolute;
+    bottom: 0px;
+}
+
+.color-tool input {
+    margin: 0px;
+    width: 58px;
+    padding: 0px;
+    height: 30px;
+}
+
+.color-tool input::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+
+.color-tool input::-webkit-color-swatch {
+    border: 1px solid grey;
+}
+
+.slidecontainer {
+    float: right;
+    padding-top: 5px;
+    display: none;
+}
