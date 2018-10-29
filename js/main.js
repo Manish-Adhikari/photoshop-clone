@@ -32,7 +32,7 @@ class mainFile {
         this.download = new download();
 
         this.addLayer.addEventListener("click", (this.createNew = event => {
-            if (this.layerArray.length>0) {
+            if (this.layerArray.length > 0) {
                 this.bgFlag = false;
                 this.createLayers(this.bgFlag);
             }
@@ -41,7 +41,7 @@ class mainFile {
         this.newFile.addEventListener("click", (this.createNew = event => {
             if (this.layerArray.length == 0) {
                 this.bgFlag = true;
-                console.log(this.layerArray);
+                //console.log(this.layerArray);
                 this.createLayers(this.bgFlag);
             }
         }));
@@ -101,19 +101,37 @@ class mainFile {
         });
 
         this.merge.layersMerge.addEventListener("click", event => {
-            let newLayer = this.layerArray[0];
-            let temp;
+
+            let cnvs = document.createElement('canvas');
+            document.body.appendChild(cnvs);
+            cnvs.height = 588;
+            cnvs.width = 950;
+            let cxt = cnvs.getContext('2d');
+
             for (let i = 0; i < this.layerArray.length; i++) {
-                newLayer.artBoard.context.drawImage(this.layerArray[i].artBoard.canvas, 0, 0);
+                cxt.drawImage(this.layerArray[i].artBoard.canvas, 0, 0);
             }
 
-            for (let i = this.layerArray.length; i > 1; i--) {
+            for (let i = this.layerArray.length; i > 0; i--) {
                 let lastElement = this.layerArray[i - 1];
                 lastElement.artBoard.canvas.remove();
                 lastElement.layerDiv.remove();
                 this.layerArray.splice(this.layerArray.indexOf(i), 1);
             }
+            let layers = new layer(0);
+            layers.artBoard.canvas.style.background = 'white';
+            layers.artBoard.context.drawImage(cnvs, 0, 0);
+            this.layerArray.push(layers);
+            this.currentLayer = this.layerArray[0];
+            document.body.removeChild(cnvs);
             this.resetLayers();
+
+            layers.layerDiv.addEventListener("click", event => {
+                this.resetLayerBg();
+                this.currentLayer = layers;
+                console.log(this.currentLayer.artBoard.cIndex);
+                this.currentLayer.layerDiv.style.backgroundColor = "#FFF";
+            });
         });
 
         this.download.downloadCanvas.addEventListener("click", event => {
@@ -213,10 +231,8 @@ class mainFile {
         this.resetLayerBg();
         layers.layerDiv.style.backgroundColor = '#FFF';
         console.log(flag);
-        if(flag) {
+        if (flag) {
             this.currentLayer.artBoard.canvas.style.background = 'white';
-            // this.currentLayer.artBoard.context.fillStyle="#FFFAFA";
-            // this.currentLayer.artBoard.context.fillRect(0,0,this.currentLayer.artBoard.canvas.width,this.currentLayer.artBoard.canvas.height);
         }
 
         layers.layerDiv.addEventListener("click", event => {
