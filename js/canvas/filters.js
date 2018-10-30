@@ -1,12 +1,14 @@
 let grayscale = document.getElementById('grayscale');
 let sepia = document.getElementById('sepia');
-let newF = document.getElementById('new-filter')
+let newF = document.getElementById('new-filter');
+let sunglassF = document.getElementById('sunglass');
 
 class filters {
     constructor() {
         this.grayscale = grayscale;
         this.sepia = sepia;
         this.newF = newF;
+        this.sunglassF = sunglassF;
     }
 
     grayscaleFilter(currentLayer) {
@@ -14,6 +16,20 @@ class filters {
         this.imgDatas(this.currentLayer);
         this.RGBAdata = this.getPixelMatrix(this.context, 0, 0, this.width - 1, this.height - 1, this.width, this.height, (r, g, b, a) => { var grey = 0.21 * r + 0.72 * g + 0.07 * b; return { r: grey, g: grey, b: grey, a } });
         this.drawImg(this.RGBAdata, this.currentLayer);
+    }
+    
+    sunglassFilter(currentLayer) {
+        console.log(currentLayer);
+        let videoImage = new IMG(currentLayer.artBoard.canvas);
+        videoImage.initImage();
+        let faceMatrix = videoImage.faceMatrix();
+        let smoothedFace = videoImage.smoothFacePixels(faceMatrix);
+    ///    videoImage.plotInCanvas(faceMatrixCanvas,smoothedFace,true);
+        let faceCoordinates = videoImage.findVerticesFromBinary(smoothedFace);
+
+        let probableEyeCoordinate = videoImage.probableEyeCoordinates(faceCoordinates);
+        videoImage.context.drawImage(sunglass,probableEyeCoordinate.x,probableEyeCoordinate.y,probableEyeCoordinate.width,probableEyeCoordinate.height);
+
     }
 
     sepiaFilter(currentLayer) {

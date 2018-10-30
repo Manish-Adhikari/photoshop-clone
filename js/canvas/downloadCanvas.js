@@ -17,7 +17,7 @@ class download {
         cnvs.width = 950;
         let cxt = cnvs.getContext('2d');
 
-        cxt.fillStyle="#FFFAFA";
+        cxt.fillStyle="#FFF";
         cxt.fillRect(0,0,cnvs.width,cnvs.height);
 
         cxt.drawImage(canvas,0,0);

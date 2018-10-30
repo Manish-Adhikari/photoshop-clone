@@ -20,6 +20,7 @@ class artBoard {
         this.selectSelectFlag = false;
         this.textSelectFlag = false;
         this.eraserSelectFlag = false;
+        this.selectionSelectFlag = false;
 
         this.offsetX = this.canvas.offsetLeft;
         this.offsetY = this.canvas.offsetTop;
@@ -27,8 +28,9 @@ class artBoard {
         this.startX;
         this.startY;
         this.isDown = false;
+        this.mouseFlag = true;
 
-
+        this.imgFlag = false;
         this.pi2 = Math.PI * 2;
         this.resizerRadius = 4;
         this.rr = this.resizerRadius * this.resizerRadius;
@@ -63,43 +65,50 @@ class artBoard {
                 this.enableFlag(e, this);
                 console.log(this.brushSelectFlag);
             }
-            // if (this.imgFlag) {
-            //     this.handleMouseDown(e);
-            //     console.log('mousedown');
-            // }
+            if (this.selectionSelectFlag) {
+                this.handleMouseDown(e);
+                console.log('mousedown');
+            }
         });
 
         this.canvas.addEventListener("mousemove", (e) => {
             if (this.brushSelectFlag || this.eraserSelectFlag) {
                 this.plotPoints(e, this);
             }
-            //     if (this.imgFlag) {
-            //     this.handleMouseMove(e);
-            //     console.log('mousemove');
-            // }
+                if (this.selectionSelectFlag) {
+                this.handleMouseMove(e);
+                console.log('mousemove');
+            }
         });
 
         this.canvas.addEventListener("mouseup", (e) => {
             if (this.brushSelectFlag || this.eraserSelectFlag) {
                 this.disableFlag(this);
             }
-            //     if (this.imgFlag) {
-            //     this.handleMouseUp(e);
-            //     console.log('mouseup');
-            // }
+                if (this.selectionSelectFlag) {
+                this.handleMouseUp(e);
+                console.log('mouseup');
+            }
         });
 
-        // this.canvas.addEventListener("mouseout", (e) => {
-        //     if (this.imgFlag) {
-        //     this.handleMouseOut(e);;
-        //     console.log('mouseout');
-        //     }
-        // });
+        this.canvas.addEventListener("mouseout", (e) => {
+            if (this.selectionSelectFlag) {
+            this.handleMouseOut(e);;
+            console.log('mouseout');
+            }
+        });
+
+         this.canvas.addEventListener("dblclick", (e) => {
+            if (this.selectionSelectFlag) {
+            this.handleDblClick(e);
+            console.log('double click');
+            }
+        });
     }
 
     resetSelectionFlag() {
         this.brushSelectFlag = false;
-        this.selectSelectFlag = false;
+        this.selectionSelectFlag = false;
         this.textSelectFlag = false;
         this.eraserSelectFlag = false;
     }
@@ -148,35 +157,21 @@ class artBoard {
         }
 
         this.img.src = source;
-        // console.log(this.img.src);
     }
 
     draw(withAnchors, withBorders) {
 
-        // clear the canvas
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-        // draw the image
         this.context.drawImage(this.img, 0, 0, this.img.width, this.img.height, this.imageX, this.imageY, this.imageWidth, this.imageHeight);
 
-        // optionally draw the draggable anchors
+        if (this.selectionSelectFlag) {
         if (withAnchors) {
             this.drawDragAnchor(this.imageX, this.imageY);
             this.drawDragAnchor(this.imageRight, this.imageY);
             this.drawDragAnchor(this.imageRight, this.imageBottom);
             this.drawDragAnchor(this.imageX, this.imageBottom);
         }
-
-        // optionally draw the connecting anchor lines
-        // if (withBorders) {
-        this.context.beginPath();
-        this.context.moveTo(this.imageX, this.imageY);
-        this.context.lineTo(this.imageRight, this.imageY);
-        this.context.lineTo(this.imageRight, this.imageBottom);
-        this.context.lineTo(this.imageX, this.imageBottom);
-        this.context.closePath();
-        this.context.stroke();
-        // }
+    }
 
     }
 
@@ -188,28 +183,22 @@ class artBoard {
     }
 
     anchorHitTest(x, y) {
-
         let dx, dy;
-
-        // top-left
         dx = x - this.imageX;
         dy = y - this.imageY;
         if (dx * dx + dy * dy <= this.rr) {
             return (0);
         }
-        // top-right
         dx = x - this.imageRight;
         dy = y - this.imageY;
         if (dx * dx + dy * dy <= this.rr) {
             return (1);
         }
-        // bottom-right
         dx = x - this.imageRight;
         dy = y - this.imageBottom;
         if (dx * dx + dy * dy <= this.rr) {
             return (2);
         }
-        // bottom-left
         dx = x - this.imageX;
         dy = y - this.imageBottom;
         if (dx * dx + dy * dy <= this.rr) {
@@ -234,11 +223,18 @@ class artBoard {
     handleMouseUp(e) {
         this.draggingResizer = -1;
         this.draggingImage = false;
+        if(this.mouseFlag) {
         this.draw(true, false);
+        }
     }
 
     handleMouseOut(e) {
         this.handleMouseUp(e);
+    }
+
+    handleDblClick(e) {
+        this.draw(false, true);
+        this.mouseFlag = false;
     }
 
     handleMouseMove(e) {
@@ -248,7 +244,6 @@ class artBoard {
             this.mouseX = parseInt(e.clientX - this.offsetX);
             this.mouseY = parseInt(e.clientY - this.offsetY);
 
-            // resize the image
             switch (this.draggingResizer) {
                 case 0:
                     //top-left
@@ -292,19 +287,14 @@ class artBoard {
 
             this.mouseX = parseInt(e.clientX - this.offsetX);
             this.mouseY = parseInt(e.clientY - this.offsetY);
-
-            // move the image by the amount of the latest drag
             let dx = this.mouseX - this.startX;
             let dy = this.mouseY - this.startY;
             this.imageX += dx;
             this.imageY += dy;
             this.imageRight += dx;
             this.imageBottom += dy;
-            // reset the startXY for next time
             this.startX = this.mouseX;
             this.startY = this.mouseY;
-
-            // redraw the image with border
             this.draw(false, true);
 
         }

@@ -11,6 +11,9 @@ let colorPicker = document.getElementById('color-picker');
 let slider = document.getElementById('slider');
 let newFile = document.getElementById('new-file');
 
+const sunglass = new Image();
+sunglass.src = 'images/sunglass.png';
+
 
 class mainFile {
     constructor() {
@@ -90,6 +93,11 @@ class mainFile {
 
         });
 
+        this.filter.sunglassF.addEventListener("click", event => {
+            this.filter.sunglassFilter(this.currentLayer);
+
+        });
+
         this.filter.sepia.addEventListener("click", event => {
             this.filter.sepiaFilter(this.currentLayer);
 
@@ -151,7 +159,7 @@ class mainFile {
             this.layerArray.push(layers);
             this.resetLayers();
             this.currentLayer = layers;
-            this.currentLayer.artBoard.imgFlag = true;
+            //this.currentLayer.artBoard.imgFlag = true;
 
             files = event.target.files;
             file = files[0];
@@ -195,6 +203,13 @@ class mainFile {
             this.currentLayer.artBoard.eraserSelectFlag = true;
             this.currentLayer.artBoard.canvas.style.cursor = 'move';
             this.currentLayer.artBoard.sliderContainer.style.display = 'block';
+        });
+
+        this.selectTool.addEventListener("click", event => {
+            this.currentLayer.artBoard.resetSelectionFlag();
+            this.resetBorders();
+            this.selectTool.style.border = '1px solid grey';
+            this.currentLayer.artBoard.selectionSelectFlag= true;
         });
 
         this.textTool.addEventListener("click", event => {
@@ -247,6 +262,7 @@ class mainFile {
         this.brushTool.style.border = 'none';
         this.eraserTool.style.border = 'none';
         this.textTool.style.border = 'none';
+        this.selectTool.style.border = 'none';
         this.textFlag = false;
         if (this.currentLayer) {
             this.currentLayer.artBoard.sliderContainer.style.display = 'none';
