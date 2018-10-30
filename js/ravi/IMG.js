@@ -289,7 +289,7 @@ class IMG{
     probableEyeCoordinates(skinCoordinates){
         return {
             x:skinCoordinates.x ,
-            y: skinCoordinates.y + (skinCoordinates.height - skinCoordinates.y) /2 ,
+            y: skinCoordinates.y + (skinCoordinates.height - skinCoordinates.y - 30) /2 ,
             width: skinCoordinates.width,
             height:((skinCoordinates.width-20) * 69) / 200,
         }; 

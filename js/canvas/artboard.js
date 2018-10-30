@@ -28,7 +28,7 @@ class artBoard {
         this.startX;
         this.startY;
         this.isDown = false;
-        this.mouseFlag = true;
+        this.mouseFlag = false;
 
         this.imgFlag = false;
         this.pi2 = Math.PI * 2;
@@ -75,7 +75,7 @@ class artBoard {
             if (this.brushSelectFlag || this.eraserSelectFlag) {
                 this.plotPoints(e, this);
             }
-                if (this.selectionSelectFlag) {
+            if (this.selectionSelectFlag) {
                 this.handleMouseMove(e);
                 console.log('mousemove');
             }
@@ -85,7 +85,7 @@ class artBoard {
             if (this.brushSelectFlag || this.eraserSelectFlag) {
                 this.disableFlag(this);
             }
-                if (this.selectionSelectFlag) {
+            if (this.selectionSelectFlag) {
                 this.handleMouseUp(e);
                 console.log('mouseup');
             }
@@ -93,15 +93,15 @@ class artBoard {
 
         this.canvas.addEventListener("mouseout", (e) => {
             if (this.selectionSelectFlag) {
-            this.handleMouseOut(e);;
-            console.log('mouseout');
+                this.handleMouseOut(e);;
+                console.log('mouseout');
             }
         });
 
-         this.canvas.addEventListener("dblclick", (e) => {
+        this.canvas.addEventListener("dblclick", (e) => {
             if (this.selectionSelectFlag) {
-            this.handleDblClick(e);
-            console.log('double click');
+                this.handleDblClick(e);
+                console.log('double click');
             }
         });
     }
@@ -165,13 +165,13 @@ class artBoard {
         this.context.drawImage(this.img, 0, 0, this.img.width, this.img.height, this.imageX, this.imageY, this.imageWidth, this.imageHeight);
 
         if (this.selectionSelectFlag) {
-        if (withAnchors) {
-            this.drawDragAnchor(this.imageX, this.imageY);
-            this.drawDragAnchor(this.imageRight, this.imageY);
-            this.drawDragAnchor(this.imageRight, this.imageBottom);
-            this.drawDragAnchor(this.imageX, this.imageBottom);
+            if (withAnchors) {
+                this.drawDragAnchor(this.imageX, this.imageY);
+                this.drawDragAnchor(this.imageRight, this.imageY);
+                this.drawDragAnchor(this.imageRight, this.imageBottom);
+                this.drawDragAnchor(this.imageX, this.imageBottom);
+            }
         }
-    }
 
     }
 
@@ -223,8 +223,8 @@ class artBoard {
     handleMouseUp(e) {
         this.draggingResizer = -1;
         this.draggingImage = false;
-        if(this.mouseFlag) {
-        this.draw(true, false);
+        if (!this.mouseFlag) {
+            this.draw(true, false);
         }
     }
 
@@ -233,70 +233,76 @@ class artBoard {
     }
 
     handleDblClick(e) {
-        this.draw(false, true);
-        this.mouseFlag = false;
+        if (this.mouseFlag) {
+            this.draw(true, true);
+            this.mouseFlag = false;
+        } else {
+            this.draw(false, true);
+            this.mouseFlag = true;
+        }
     }
 
     handleMouseMove(e) {
+        if (!this.mouseFlag) {
+            if (this.draggingResizer > -1) {
 
-        if (this.draggingResizer > -1) {
+                this.mouseX = parseInt(e.clientX - this.offsetX);
+                this.mouseY = parseInt(e.clientY - this.offsetY);
 
-            this.mouseX = parseInt(e.clientX - this.offsetX);
-            this.mouseY = parseInt(e.clientY - this.offsetY);
+                switch (this.draggingResizer) {
+                    case 0:
+                        //top-left
+                        this.imageX = this.mouseX;
+                        this.imageWidth = this.imageRight - this.mouseX;
+                        this.imageY = this.mouseY;
+                        this.imageHeight = this.imageBottom - this.mouseY;
+                        break;
+                    case 1:
+                        //top-right
+                        this.imageY = this.mouseY;
+                        this.imageWidth = this.mouseX - this.imageX;
+                        this.imageHeight = this.imageBottom - this.mouseY;
+                        break;
+                    case 2:
+                        //bottom-right
+                        this.imageWidth = this.mouseX - this.imageX;
+                        this.imageHeight = this.mouseY - this.imageY;
+                        break;
+                    case 3:
+                        //bottom-left
+                        this.imageX = this.mouseX;
+                        this.imageWidth = this.imageRight - this.mouseX;
+                        this.imageHeight = this.mouseY - this.imageY;
+                        break;
+                }
 
-            switch (this.draggingResizer) {
-                case 0:
-                    //top-left
-                    this.imageX = this.mouseX;
-                    this.imageWidth = this.imageRight - this.mouseX;
-                    this.imageY = this.mouseY;
-                    this.imageHeight = this.imageBottom - this.mouseY;
-                    break;
-                case 1:
-                    //top-right
-                    this.imageY = this.mouseY;
-                    this.imageWidth = this.mouseX - this.imageX;
-                    this.imageHeight = this.imageBottom - this.mouseY;
-                    break;
-                case 2:
-                    //bottom-right
-                    this.imageWidth = this.mouseX - this.imageX;
-                    this.imageHeight = this.mouseY - this.imageY;
-                    break;
-                case 3:
-                    //bottom-left
-                    this.imageX = this.mouseX;
-                    this.imageWidth = this.imageRight - this.mouseX;
-                    this.imageHeight = this.mouseY - this.imageY;
-                    break;
+                if (this.imageWidth < 25) { this.imageWidth = 25; }
+                if (this.imageHeight < 25) { this.imageHeight = 25; }
+
+                // set the image right and bottom
+                this.imageRight = this.imageX + this.imageWidth;
+                this.imageBottom = this.imageY + this.imageHeight;
+
+                // redraw the image with resizing anchors
+                this.draw(true, true);
+
+            } else if (this.draggingImage) {
+
+                this.imageClick = false;
+
+                this.mouseX = parseInt(e.clientX - this.offsetX);
+                this.mouseY = parseInt(e.clientY - this.offsetY);
+                let dx = this.mouseX - this.startX;
+                let dy = this.mouseY - this.startY;
+                this.imageX += dx;
+                this.imageY += dy;
+                this.imageRight += dx;
+                this.imageBottom += dy;
+                this.startX = this.mouseX;
+                this.startY = this.mouseY;
+                this.draw(false, true);
+
             }
-
-            if (this.imageWidth < 25) { this.imageWidth = 25; }
-            if (this.imageHeight < 25) { this.imageHeight = 25; }
-
-            // set the image right and bottom
-            this.imageRight = this.imageX + this.imageWidth;
-            this.imageBottom = this.imageY + this.imageHeight;
-
-            // redraw the image with resizing anchors
-            this.draw(true, true);
-
-        } else if (this.draggingImage) {
-
-            this.imageClick = false;
-
-            this.mouseX = parseInt(e.clientX - this.offsetX);
-            this.mouseY = parseInt(e.clientY - this.offsetY);
-            let dx = this.mouseX - this.startX;
-            let dy = this.mouseY - this.startY;
-            this.imageX += dx;
-            this.imageY += dy;
-            this.imageRight += dx;
-            this.imageBottom += dy;
-            this.startX = this.mouseX;
-            this.startY = this.mouseY;
-            this.draw(false, true);
-
         }
     }
 }
