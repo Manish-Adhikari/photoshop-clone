@@ -215,7 +215,6 @@ class mainFile {
         this.textTool.addEventListener("click", event => {
             this.currentLayer.artBoard.resetSelectionFlag();
             this.resetBorders();
-            console.log('Text');
             this.textTool.style.border = '1px solid grey';
             this.textFlag = true;
             this.currentLayer.artBoard.sliderContainer.style.display = 'block';
@@ -223,9 +222,10 @@ class mainFile {
             this.currentLayer.artBoard.canvas.addEventListener("click", e => {
                 if (this.textFlag) {
                     let text = prompt('Text:', '');
-                    this.currentLayer.artBoard.context.fillStyle = this.colorPicker.value;
+                    this.currentLayer.artBoard.context.fillStyle = this.colorPicker.value || 'black';
 
                     if (text) {
+                        console.log(this.currentLayer.artBoard.context.fillStyle);
                         let pos = this.relativePos(e, this.currentLayer.artBoard.canvas);
                         this.currentLayer.artBoard.context.font = this.currentLayer.artBoard.context.lineWidth + 'px sans-serif';
                         this.currentLayer.artBoard.context.fillText(text, pos.x, pos.y);

@@ -34,10 +34,7 @@ class artBoard {
         this.pi2 = Math.PI * 2;
         this.resizerRadius = 4;
         this.rr = this.resizerRadius * this.resizerRadius;
-        this.draggingResizer = {
-            x: 0,
-            y: 0
-        };
+        this.draggingResizer;
         this.imageX = 0;
         this.imageY = 0;
         this.imageWidth;
